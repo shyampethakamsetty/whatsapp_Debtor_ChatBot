@@ -1,0 +1,594 @@
+{
+  "name": "debtorChatbot",
+  "nodes": [
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {}
+      },
+      "id": "b135ce38-f387-40ea-a0e3-e743fa6bb718",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        940
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "text/plain"
+            }
+          }
+        }
+      },
+      "id": "318aa587-529b-41a6-8c55-e2c8d006fdf7",
+      "name": "Download File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -420,
+        720
+      ],
+      "executeOnce": true,
+      "credentials": {
+        "googleApi": {
+          "id": "6qhdEsg5lnRbcuKS",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "fa00ef92-44fd-4107-916d-f1feab50fa47",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        1180
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "id": "fb49dc05-98fc-4b78-881b-4a182e37a7d7",
+      "name": "Insert into Supabase Vectorstore",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        720
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "A1NptpnnjYLhcb2e",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -180,
+        940
+      ],
+      "id": "71ba64ca-8497-47ff-8150-d215562ecb00",
+      "name": "Embeddings Mistral Cloud1",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "urLDru4DPJu0lVwQ",
+          "name": "Mistral Cloud account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-r1-distill-llama-70b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        200
+      ],
+      "id": "b1a8a5a5-396d-444c-afe0-c8368376775c",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "5CGLXzFYRJVIMsX2",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        200
+      ],
+      "id": "173248f2-99f7-4408-88df-4db9744885cd",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "5CGLXzFYRJVIMsX2",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        380
+      ],
+      "id": "b2bc01ef-9d39-4184-a613-b0eaff8428b6",
+      "name": "Embeddings Mistral Cloud2",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "urLDru4DPJu0lVwQ",
+          "name": "Mistral Cloud account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "authentication": "serviceAccount",
+        "triggerOn": "specificFile",
+        "fileToWatch": {
+          "__rl": true,
+          "value": "1oz7hQB-T8--h9EUB-1qZS7637ByefoeS1_9ZQnD2_WQ",
+          "mode": "list",
+          "cachedResultName": "debtors_records",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oz7hQB-T8--h9EUB-1qZS7637ByefoeS1_9ZQnD2_WQ/edit?usp=drivesdk"
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -920,
+        720
+      ],
+      "id": "50cebe65-36e1-4698-9536-d2bd8b7775d2",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleApi": {
+          "id": "6qhdEsg5lnRbcuKS",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd5904b9-ac0f-457e-a589-2fa61fd75762",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "c5b38ce0-2af3-49c1-9971-c1ef70952767",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -720,
+        720
+      ],
+      "id": "fffafc33-1cea-4fd2-860d-7d1b80de1872",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "content": "Workflow To insert Debtor Data into Vector store",
+        "height": 720,
+        "width": 1480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1120,
+        580
+      ],
+      "typeVersion": 1,
+      "id": "de25ff8c-52a8-4aaa-b7b7-b5d4b43d7e57",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "AI Agent",
+        "height": 760,
+        "width": 1080,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1000,
+        -200
+      ],
+      "typeVersion": 1,
+      "id": "ad15459b-7962-4156-b9a3-f23c84354007",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.messages[0].text.body }}",
+        "options": {
+          "systemMessage": "=#ROLE\nyou are a polite virtual assistant for Crowd Wisdom Trading company.greet user and ask for ID for more details.\n\n#INSTRUCTIONS\nDont make up things use \"Query\" tool fetch data , then answer queries\nalways ask user when is willing to pay\ndont answer without fetching data from \"Query\" tool\nask him specify date of repayment\nif he refuses , explain him the consequences else kindly ask him repayment\n\n#OUTPUT\navoid unnecessary responses\nrespond with clear and consise response\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -540,
+        -160
+      ],
+      "id": "62000fc1-5c4d-4acd-88e0-243440988378",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.contacts[0].wa_id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -620,
+        200
+      ],
+      "id": "c90b36de-22b1-4d88-86be-55c042ed6d4e",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ]
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -960,
+        -140
+      ],
+      "id": "466fe3f1-1084-4174-9689-a9b0644d0708",
+      "name": "chatrecieved",
+      "webhookId": "cc5ecc22-aa28-408e-8f8d-ca84665b5704",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "sf2QuWnKAJjeFbci",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0c83b33c-6173-4802-a957-e5020d667335",
+              "leftValue": "={{ $json.messages[0].text.body }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -780,
+        -140
+      ],
+      "id": "a26aee2d-f9cf-443e-a28e-2605cc1a85a0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "595476316975125",
+        "recipientPhoneNumber": "={{ $('If').item.json.messages[0].from }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -160
+      ],
+      "id": "c907104a-7aff-434e-a3ba-375f02ab5d7b",
+      "name": "reply",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "6PPpOP4vegjwLXcT",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -440,
+        200
+      ],
+      "id": "a56d4105-909d-459d-9052-22de0b3aa9b5",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "A1NptpnnjYLhcb2e",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "n8nchatbot",
+        "description": "retrieve data related debtors records. debtors due dates, status , due amount etc., on the basis of provided ID",
+        "topK": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        20
+      ],
+      "id": "e4db55d0-c7a8-4f1d-8cbc-09e8c387c96b",
+      "name": "Query"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File": {
+      "main": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Insert into Supabase Vectorstore",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Query",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Download File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "chatrecieved": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Query",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d381933f-bb21-40af-aee3-0eb514792013",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "07a81701696da2aa42f256dbcc62016b9b4750ae417ab3a8edc41cf1ced31471"
+  },
+  "id": "zaRcFpm4NLrxm4bD",
+  "tags": []
+}
