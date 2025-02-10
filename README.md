@@ -79,4 +79,4 @@ The Debtor Chatbot is an automated workflow in n8n designed to interact with deb
 
  Support
 
-For any issues, contact [[support@example.com](mailto\:shyampethakamsetty@gmail.com)] or create a GitHub issue.
+For any issues, contact shyampethakamsetty@gmail.com or create a GitHub issue.
