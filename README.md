@@ -1,6 +1,12 @@
 # Debtor Chatbot - n8n Workflow
 
- Overview
+## Screenshots
+
+![Workflow Overview](Screenshot%202025-02-10%20170839.png)
+
+![Detailed Workflow](Screenshot%202025-02-10%20170920.png)
+
+## Overview
 
 The Debtor Chatbot is an automated workflow in n8n designed to interact with debtors, retrieve payment details from a Google Sheet, and engage with users via WhatsApp. It uses AI-powered chat capabilities to answer debtor queries and request payments efficiently.
 
